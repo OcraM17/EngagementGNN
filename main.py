@@ -10,9 +10,9 @@ import numpy as np
 import tensorflow as tf
 from GCN import create_GCN
 from MLP import create_MLP
-from keras.utils import to_categorical
+from tensorflow.keras.utils import to_categorical
 from Training import run_experiment
-
+from Evaluation import evaluate
 
 def main(BERT=True, PCA = True, Model_Type = 'GCN' ):
     g = nx.read_gpickle('./fist_week.pickle')
@@ -36,9 +36,9 @@ def main(BERT=True, PCA = True, Model_Type = 'GCN' ):
         for col in df.columns:
             if not isinstance(df[col].values[0], str):
                 df[col] = (df[col] - df[col].min()) / (df[col].max() - df[col].min())
+        del emb,model
     else:
-        df = pd.read_csv("/content/drive/MyDrive/Twitter GNN/first_week_posts_bert.csv")
-    del emb, model
+        df = pd.read_csv("./first_week_posts_bert.csv")
     gc.collect()
     mapping_graph = {k: v for v, k in enumerate(g.nodes)}
     g = nx.relabel_nodes(g, mapping_graph)
@@ -53,12 +53,17 @@ def main(BERT=True, PCA = True, Model_Type = 'GCN' ):
     graph_info = (node_features, edges, edges_weight)
     if Model_Type == 'GCN':
         num_classes = 2
-        hidden_units=16
+        hidden_units=[16]
         dropout_rate = 0.3
+        learning_rate = 0.1
+        num_epochs = 300
+        batch_size = 256
         input = np.array(X_train.index)
         target = to_categorical(y_train)
         model = create_GCN(graph_info, num_classes, hidden_units, dropout_rate)
         loss = keras.losses.CategoricalCrossentropy
+        input_test = np.array(X_test.index)
+        target_test = to_categorical(y_test)
     if Model_Type == 'MLP':
         hidden_units = [32, 32]
         learning_rate = 0.01
@@ -66,13 +71,16 @@ def main(BERT=True, PCA = True, Model_Type = 'GCN' ):
         num_epochs = 300
         batch_size = 256
         num_classes = 2
-        model = create_MLP(hidden_units, num_classes, dropout_rate)
+        model = create_MLP(778, hidden_units, num_classes, dropout_rate)
         loss = keras.losses.CategoricalCrossentropy
-        input = X_train.index
-        target = y_train
+        input = X_train
+        target = to_categorical(y_train)
+        input_test = X_test
+        target_test = to_categorical(y_test)
     del edges, node_features, edges_weight, df, g
     gc.collect()
     run_experiment(model, input, target, learning_rate, loss, num_epochs, batch_size)
+    evaluate(model, input_test, target_test)
 
 if __name__=='__main__':
     main()
