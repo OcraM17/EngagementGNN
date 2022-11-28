@@ -2,10 +2,10 @@ from tensorflow import keras
 from GCN import GNNNodeRegression
 
 
-def run_experiment(model, x_train, y_train, learning_rate, loss, num_epochs, batch_size):
+def run_experiment(model, x_train, y_train, learning_rate, loss, num_epochs, batch_size, optimizer):
     # Compile the model.
     model.compile(
-        optimizer=keras.optimizers.Adam(learning_rate),
+        optimizer=optimizer(learning_rate),
         loss = loss(from_logits=True),
         metrics=['accuracy'],
     )
