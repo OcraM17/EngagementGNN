@@ -16,6 +16,6 @@ def MLP(input_shape, hidden_units, num_classes, dropout_rate=0.2):
     # Create the model.
     return keras.Model(inputs=inputs, outputs=logits, name="baseline")
 
-def create_MLP(hidden_units, num_classes, dropout_rate):
-    model = MLP(hidden_units, num_classes, dropout_rate)
+def create_MLP(input_shape,hidden_units, num_classes, dropout_rate):
+    model = MLP(input_shape, hidden_units, num_classes, dropout_rate)
     return model

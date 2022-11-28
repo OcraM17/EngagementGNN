@@ -1,9 +1,9 @@
 from sklearn.metrics import classification_report, confusion_matrix, precision_recall_curve, auc, roc_auc_score
 import numpy as np
-
+from scipy.special import softmax
 def evaluate(model, X_test, y_test):
     logits = model.predict(X_test)
-    probs = np.softmax(logits, axis=1)
+    probs = softmax(logits, axis=1)
     classes = np.argmax(probs, axis=1)
     print(classification_report(classes, y_test, labels=[0, 1]))
     prec, recall, thr = precision_recall_curve(y_test, probs[:, 1], pos_label=1)

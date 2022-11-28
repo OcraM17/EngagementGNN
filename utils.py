@@ -1,3 +1,4 @@
+import tensorflow as tf
 from tensorflow.keras import layers
 from tensorflow import keras
 def eng_class(x):
