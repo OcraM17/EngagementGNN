@@ -74,22 +74,22 @@ def select_params(Model_type, X_train, y_train, X_test, y_test, df, g, num_class
         input_test = np.array(X_test.index)
         target_test = y_test
     if Model_type == 'XGBOOST':
-        max_depth = 8,
-        learning_rate = 0.025,
-        subsample = 0.85,
-        colsample_bytree = 0.35,
-        eval_metric = 'logloss',
-        objective = 'binary:logistic',
-        tree_method = 'gpu_hist',
-        seed = 1,
+        max_depth = 8
+        learning_rate = 0.025
+        subsample = 0.85
+        colsample_bytree = 0.35
+        eval_metric = 'logloss'
+        objective = 'binary:logistic'
+        tree_method = 'gpu_hist'
+        seed = 1
         model = create_XGB(max_depth, learning_rate, subsample,
                            colsample_bytree, eval_metric, objective,
                            tree_method, seed)
-        return model
+        return None, None, None, None, None, None, None, None, None, None, None, None, None, None, model
     return hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, num_heads, input, target, loss, optimizer, input_test, target_test, model
 
 
-def main(LOAD_CSV=True, EXTRACT_BERT=False, PCA=False, Model_Type='XGBOOST'):
+def main(LOAD_CSV=True, EXTRACT_BERT=False, PCA=False, USER_FEAT=True, BERT_FEAT=True, Model_Type='XGBOOST'):
     g = nx.read_gpickle('./fist_week.pickle')
     print("POST:", len(g.nodes))
     print("ARCS:", len(g.edges))
@@ -111,6 +111,12 @@ def main(LOAD_CSV=True, EXTRACT_BERT=False, PCA=False, Model_Type='XGBOOST'):
         df = normalize(df)
     else:
         df = pd.read_csv("./first_week_posts_bert.csv")
+        if USER_FEAT and not BERT_FEAT:
+            df = df.iloc[:, 0:11]
+        if not USER_FEAT and BERT_FEAT:
+            df = df.iloc[:, 10:]
+
+
     X_train, X_test, y_train, y_test = train_test_split(df.drop(["class"], axis=1), df["class"], test_size=0.2,
                                                         random_state=42, stratify=df["class"])
     hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, \
@@ -119,7 +125,7 @@ def main(LOAD_CSV=True, EXTRACT_BERT=False, PCA=False, Model_Type='XGBOOST'):
                                                                                               df,
                                                                                               g, num_classes=2,
                                                                                               num_epochs=300)
-    if Model_Type == 'XGBOOST':
+    if not Model_Type == 'XGBOOST':
         run_experiment(model, input, target, learning_rate, loss, num_epochs, batch_size, optimizer)
         evaluate(model, input_test, target_test)
     else:
