@@ -1,11 +1,12 @@
 from tensorflow import keras
+import xgboost as xgb
 
 
 def run_experiment(model, x_train, y_train, learning_rate, loss, num_epochs, batch_size, optimizer):
     # Compile the model.
     model.compile(
         optimizer=optimizer(learning_rate),
-        loss = loss(from_logits=True),
+        loss=loss(from_logits=True),
         metrics=['accuracy'],
     )
     # Create an early stopping callback.
@@ -25,3 +26,13 @@ def run_experiment(model, x_train, y_train, learning_rate, loss, num_epochs, bat
         callbacks=[early_stopping, reduce_lr],
     )
     return history
+
+
+def run_experiment_XGB(model, x_train, y_train):
+    dtrain = xgb.DMatrix(data=x_train, label=y_train)
+
+    obj = xgb.train(model.__getparams__(),
+                      dtrain=dtrain,
+                      num_boost_round=500,
+                      )
+    return obj

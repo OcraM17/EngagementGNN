@@ -2,18 +2,20 @@ import pandas as pd
 from sentence_transformers import SentenceTransformer
 import gc
 from sklearn.model_selection import train_test_split
-from Training import run_experiment
-from Evaluation import evaluate
+from Training import run_experiment, run_experiment_XGB
+from Evaluation import evaluate, evaluate_XGB
 from utils import normalize, eng_class, sampling_k_elements, extract_graph
 import numpy as np
 import networkx as nx
 from tensorflow import keras
 from keras.utils import to_categorical
 
+from Xgboost import create_XGB
 from Conv1D import create_Conv1D
 from GAT import create_GAT
 from GCN import create_GCN
 from MLP import create_MLP
+
 
 def select_params(Model_type, X_train, y_train, X_test, y_test, df, g, num_classes=2, num_epochs=300):
     num_classes = num_classes
@@ -71,10 +73,24 @@ def select_params(Model_type, X_train, y_train, X_test, y_test, df, g, num_class
         optimizer = keras.optimizers.SGD
         input_test = np.array(X_test.index)
         target_test = y_test
+    if Model_type == 'XGBOOST':
+        max_depth = 8,
+        learning_rate = 0.025,
+        subsample = 0.85,
+        colsample_bytree = 0.35,
+        eval_metric = 'logloss',
+        objective = 'binary:logistic',
+        tree_method = 'gpu_hist',
+        seed = 1,
+        learning_rate = 0.01
+        model = create_XGB(max_depth, learning_rate, subsample,
+                           colsample_bytree, eval_metric, objective,
+                           tree_method, seed)
+        return
     return hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, num_heads, input, target, loss, optimizer, input_test, target_test, model
 
 
-def main(LOAD_CSV=True, EXTRACT_BERT=False, PCA=False, Model_Type='MLP'):
+def main(LOAD_CSV=True, EXTRACT_BERT=False, PCA=False, Model_Type='XGBOOST'):
     g = nx.read_gpickle('./fist_week.pickle')
     print("POST:", len(g.nodes))
     print("ARCS:", len(g.edges))
@@ -100,12 +116,16 @@ def main(LOAD_CSV=True, EXTRACT_BERT=False, PCA=False, Model_Type='MLP'):
                                                         random_state=42, stratify=df["class"])
     hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, \
     num_heads, input, target, loss, optimizer, input_test, target_test, model = select_params(Model_Type, X_train,
-                                                                                              y_train, X_test, y_test, df,
+                                                                                              y_train, X_test, y_test,
+                                                                                              df,
                                                                                               g, num_classes=2,
                                                                                               num_epochs=300)
-    run_experiment(model, input, target, learning_rate, loss, num_epochs, batch_size, optimizer)
-    evaluate(model, input_test, target_test)
-
+    if Model_Type == 'XGBOOST':
+        run_experiment(model, input, target, learning_rate, loss, num_epochs, batch_size, optimizer)
+        evaluate(model, input_test, target_test)
+    else:
+        obj = run_experiment_XGB(model, X_train, y_train)
+        evaluate_XGB(obj, X_test, y_test)
 
 if __name__ == '__main__':
     main()
