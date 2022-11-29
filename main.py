@@ -115,6 +115,14 @@ def main(LOAD_CSV=True, EXTRACT_BERT=False, PCA=False, USER_FEAT=True, BERT_FEAT
             df = df.iloc[:, 0:11]
         if not USER_FEAT and BERT_FEAT:
             df = df.iloc[:, 10:]
+        if PCA:
+            pca = PCA(n_components=48)
+            pca.fit(df.drop(["class"], axis=1))
+            emb = pca.transform(df.drop(["class"], axis=1))
+            df = pd.concat([pd.DataFrame(emb), df[["class"]]], axis=1)
+
+
+
 
 
     X_train, X_test, y_train, y_test = train_test_split(df.drop(["class"], axis=1), df["class"], test_size=0.2,
