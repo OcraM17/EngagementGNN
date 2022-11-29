@@ -1,5 +1,4 @@
 from tensorflow import keras
-from GCN import GNNNodeRegression
 
 
 def run_experiment(model, x_train, y_train, learning_rate, loss, num_epochs, batch_size, optimizer):
