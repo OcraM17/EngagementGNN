@@ -4,7 +4,7 @@ import gc
 from sklearn.model_selection import train_test_split
 from Training import run_experiment
 from Evaluation import evaluate
-from utils import normalize, eng_class, select_params, sampling_k_elements, extract_graph
+from utils import normalize, eng_class, sampling_k_elements, extract_graph
 import numpy as np
 import networkx as nx
 from tensorflow import keras
