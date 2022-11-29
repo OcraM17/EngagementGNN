@@ -100,7 +100,7 @@ def main(LOAD_CSV=True, EXTRACT_BERT=False, PCA=False, Model_Type='MLP'):
                                                         random_state=42, stratify=df["class"])
     hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, \
     num_heads, input, target, loss, optimizer, input_test, target_test, model = select_params(Model_Type, X_train,
-                                                                                              y_train, X_test, y_test,
+                                                                                              y_train, X_test, y_test, df,
                                                                                               g, num_classes=2,
                                                                                               num_epochs=300)
     run_experiment(model, input, target, learning_rate, loss, num_epochs, batch_size, optimizer)
