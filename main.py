@@ -82,11 +82,10 @@ def select_params(Model_type, X_train, y_train, X_test, y_test, df, g, num_class
         objective = 'binary:logistic',
         tree_method = 'gpu_hist',
         seed = 1,
-        learning_rate = 0.01
         model = create_XGB(max_depth, learning_rate, subsample,
                            colsample_bytree, eval_metric, objective,
                            tree_method, seed)
-        return
+        return model
     return hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, num_heads, input, target, loss, optimizer, input_test, target_test, model
 
 
