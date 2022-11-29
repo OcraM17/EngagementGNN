@@ -6,15 +6,17 @@ from tensorflow.keras import layers
 import tensorflow as tf
 import numpy as np
 from keras.utils import to_categorical
-from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, classification_report, confusion_matrix, precision_recall_curve, auc
+from sklearn.metrics import mean_squared_error, mean_absolute_error, r2_score, classification_report, confusion_matrix, \
+    precision_recall_curve, auc
+
 
 class GraphAttention(layers.Layer):
     def __init__(
-        self,
-        units,
-        kernel_initializer="glorot_uniform",
-        kernel_regularizer=None,
-        **kwargs,
+            self,
+            units,
+            kernel_initializer="glorot_uniform",
+            kernel_regularizer=None,
+            **kwargs,
     ):
         super().__init__(**kwargs)
         self.units = units
@@ -22,7 +24,6 @@ class GraphAttention(layers.Layer):
         self.kernel_regularizer = keras.regularizers.get(kernel_regularizer)
 
     def build(self, input_shape):
-
         self.kernel = self.add_weight(
             shape=(input_shape[0][-1], self.units),
             trainable=True,
@@ -100,16 +101,17 @@ class MultiHeadGraphAttention(layers.Layer):
         # Activate and return node states
         return tf.nn.relu(outputs)
 
+
 class GraphAttentionNetwork(keras.Model):
     def __init__(
-        self,
-        node_states,
-        edges,
-        hidden_units,
-        num_heads,
-        num_layers,
-        output_dim,
-        **kwargs,
+            self,
+            node_states,
+            edges,
+            hidden_units,
+            num_heads,
+            num_layers,
+            output_dim,
+            **kwargs,
     ):
         super().__init__(**kwargs)
         self.node_states = node_states
@@ -164,8 +166,7 @@ class GraphAttentionNetwork(keras.Model):
         return {m.name: m.result() for m in self.metrics}
 
 
-
-def create_GAT(node_states, edges, hidden_units,num_heads, num_layers,  num_classes):
+def create_GAT(node_states, edges, hidden_units, num_heads, num_layers, num_classes):
     gat_model = GraphAttentionNetwork(
         node_states, edges.T, hidden_units, num_heads, num_layers, num_classes
     )

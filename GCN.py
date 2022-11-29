@@ -2,16 +2,17 @@ from tensorflow.keras import layers
 from utils import create_ffn
 import tensorflow as tf
 
+
 class GraphConvLayer(layers.Layer):
     def __init__(
-        self,
-        hidden_units,
-        dropout_rate=0.2,
-        aggregation_type="mean",
-        combination_type="concat",
-        normalize=False,
-        *args,
-        **kwargs,
+            self,
+            hidden_units,
+            dropout_rate=0.2,
+            aggregation_type="mean",
+            combination_type="concat",
+            normalize=False,
+            *args,
+            **kwargs,
     ):
         super(GraphConvLayer, self).__init__(*args, **kwargs)
 
@@ -110,16 +111,16 @@ class GraphConvLayer(layers.Layer):
 
 class GNNNodeRegression(tf.keras.Model):
     def __init__(
-        self,
-        graph_info,
-        hidden_units,
-        num_classes,
-        aggregation_type="sum",
-        combination_type="concat",
-        dropout_rate=0.2,
-        normalize=True,
-        *args,
-        **kwargs,
+            self,
+            graph_info,
+            hidden_units,
+            num_classes,
+            aggregation_type="sum",
+            combination_type="concat",
+            dropout_rate=0.2,
+            normalize=True,
+            *args,
+            **kwargs,
     ):
         super(GNNNodeRegression, self).__init__(*args, **kwargs)
 
@@ -176,6 +177,7 @@ class GNNNodeRegression(tf.keras.Model):
         node_embeddings = tf.gather(x, input_node_indices)
         # Compute logits
         return self.compute_logits(node_embeddings)
+
 
 def create_GCN(graph_info, num_classes, hidden_units, dropout_rate):
     # SUM, CONCAT DA NON TOCCARE MAI E' LA MIGLIORE
