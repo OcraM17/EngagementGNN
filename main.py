@@ -1,6 +1,7 @@
 import pandas as pd
 from sentence_transformers import SentenceTransformer
 import gc
+from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
 from Training import run_experiment, run_experiment_XGB
 from Evaluation import evaluate, evaluate_XGB
@@ -9,13 +10,18 @@ import numpy as np
 import networkx as nx
 from tensorflow import keras
 from keras.utils import to_categorical
-
+import random
 from Xgboost import create_XGB
 from Conv1D import create_Conv1D
 from GAT import create_GAT
 from GCN import create_GCN
 from MLP import create_MLP
 
+def reset_random_seeds():
+    os.environ['PYTHONHASHSEED']=str(2)
+    tf.random.set_seed(2)
+    np.random.seed(2)
+    random.seed(2)
 
 def select_params(Model_type, X_train, y_train, X_test, y_test, df, g, num_classes=2, num_epochs=300):
     num_classes = num_classes
@@ -89,7 +95,8 @@ def select_params(Model_type, X_train, y_train, X_test, y_test, df, g, num_class
     return hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, num_heads, input, target, loss, optimizer, input_test, target_test, model
 
 
-def main(LOAD_CSV=True, EXTRACT_BERT=False, PCA=False, USER_FEAT=True, BERT_FEAT=True, Model_Type='XGBOOST'):
+def main(LOAD_CSV=True, EXTRACT_BERT=False, USE_PCA=True, USER_FEAT=True, BERT_FEAT=True, Model_Type='GCN'):
+    reset_random_seeds()
     g = nx.read_gpickle('./fist_week.pickle')
     print("POST:", len(g.nodes))
     print("ARCS:", len(g.edges))
@@ -101,7 +108,7 @@ def main(LOAD_CSV=True, EXTRACT_BERT=False, PCA=False, USER_FEAT=True, BERT_FEAT
         if EXTRACT_BERT:
             model = SentenceTransformer('efederici/sentence-bert-base')
             emb = model.encode(df["text"])
-            if PCA:
+            if USE_PCA:
                 pca = PCA(n_components=48)
                 pca.fit(emb)
                 emb = pca.transform(emb)
@@ -115,8 +122,9 @@ def main(LOAD_CSV=True, EXTRACT_BERT=False, PCA=False, USER_FEAT=True, BERT_FEAT
             df = df.iloc[:, 0:11]
         if not USER_FEAT and BERT_FEAT:
             df = df.iloc[:, 10:]
-        if PCA:
+        if USE_PCA:
             pca = PCA(n_components=48)
+            print('PCA 48 Components')
             pca.fit(df.drop(["class"], axis=1))
             emb = pca.transform(df.drop(["class"], axis=1))
             df = pd.concat([pd.DataFrame(emb), df[["class"]]], axis=1)
