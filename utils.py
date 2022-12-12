@@ -5,6 +5,11 @@ import numpy as np
 import networkx as nx
 
 
+def eng_mult_class(x, ths):
+    for i, (low, up) in enumerate(ths):
+        if x >= low and x < up:
+            return i
+
 def eng_class(x):
     if x <= 0:
         return 0
@@ -12,7 +17,7 @@ def eng_class(x):
         return 1
 
 
-def sampling_k_elements(group, k=103202):
+def sampling_k_elements(group, k=30000):
     if len(group) < k:
         return group
     return group.sample(k)

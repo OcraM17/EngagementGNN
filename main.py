@@ -5,7 +5,7 @@ from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
 from Training import run_experiment, run_experiment_XGB
 from Evaluation import evaluate, evaluate_XGB
-from utils import normalize, eng_class, sampling_k_elements, extract_graph
+from utils import normalize, eng_class, sampling_k_elements, extract_graph, eng_mult_class
 import numpy as np
 import networkx as nx
 from tensorflow import keras
@@ -95,7 +95,7 @@ def select_params(Model_type, X_train, y_train, X_test, y_test, df, g, num_class
     return hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, num_heads, input, target, loss, optimizer, input_test, target_test, model
 
 
-def main(LOAD_CSV=True, EXTRACT_BERT=False, USE_PCA=True, USER_FEAT=True, BERT_FEAT=True, Model_Type='GCN'):
+def main(LOAD_CSV=False, EXTRACT_BERT=True, USE_PCA=False, USER_FEAT=True, BERT_FEAT=True, Model_Type='GCN', MULTI_LABEL=True):
     reset_random_seeds()
     g = nx.read_gpickle('./fist_week.pickle')
     print("POST:", len(g.nodes))
@@ -103,7 +103,10 @@ def main(LOAD_CSV=True, EXTRACT_BERT=False, USE_PCA=True, USER_FEAT=True, BERT_F
     print("COMPONENTS:", nx.number_connected_components(g))
     if not LOAD_CSV:
         df = pd.read_csv("./first_week.csv", lineterminator="\n")
-        df["class"] = df["engagement"].apply(lambda x: eng_class(x))
+        if MULTI_LABEL:
+            df["class"] = df["engagement"].apply(lambda x: eng_mult_class(x))
+        else:
+            df["class"] = df["engagement"].apply(lambda x: eng_class(x))
         df = df.groupby('class').apply(sampling_k_elements).reset_index(drop=True)
         if EXTRACT_BERT:
             model = SentenceTransformer('efederici/sentence-bert-base')
