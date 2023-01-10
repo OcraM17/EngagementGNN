@@ -6,3 +6,8 @@ Official implementation of the paper "TweetGage: A Graph Neural Network Based Me
 [Antonino Nocera](https://scholar.google.com/citations?user=YF10PJwAAAAJ&hl=it) and
 [Luca Virgili](https://scholar.google.com/citations?hl=it&user=2D771YsAAAAJ) 
 
+## Dataset links
+
+Here you can find the datasets we used for TweetGage:
+- [Network of posts](https://drive.google.com/file/d/1JPKHXMzO6K-ZKKJq_5l4U_irlVCxuyEf/view): pickle file that can be loaded with networkx using the read_gpickle function
+- [Tweets](https://drive.google.com/file/d/1jcMsKzeaHRVEMryt-agqyBrpN6ABvg4I/view): tweets dataset including BERT embedding and the features used by TweetGage
