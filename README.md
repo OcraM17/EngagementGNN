@@ -22,7 +22,7 @@ conda create -n TweetGage python=3.9
 conda activate TweetGage
 pip install -r req.txt
 ```
-##Dataset
+## Dataset
 For our experiments, we considered one week of data from twitter, from [November 1st 2021 to November 7th.](https://archive.org/details/archiveteam-twitter-stream-2021-11)
 <p float="center">
     <img src="imgs/gr2.png"/>
@@ -30,13 +30,13 @@ For our experiments, we considered one week of data from twitter, from [November
 </p>
 
 
-##Experiments
+## Experiments
 To execute our code and replicate our results run the command:
 ```
 python3 main.py 
 ```
 
-##Results
+## Results
 
 <p float="center">
     <img src="imgs/res1.png" height="148"/>
