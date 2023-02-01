@@ -34,8 +34,8 @@ pip install -r req.txt
 ### Dataset
 For our experiments, we considered one week of data from twitter, from [November 1st 2021 to November 7th.](https://archive.org/details/archiveteam-twitter-stream-2021-11)
 <p float="center">
-    <img src="imgs/gr2.png" width="300" height="158" />
-    <img src="imgs/gr1.png" width="300" height="160"/>
+    <img src="imgs/gr2.png" width="300" height="120" />
+    <img src="imgs/gr1.png" width="300" height="122"/>
 </p>
 
 
@@ -61,8 +61,8 @@ Note: If any argument is omitted, its default value is False.
 ### Results
 
 <p float="center">
-    <img src="imgs/res1.png" width="300" height="128"/>
-    <img src="imgs/res2.png" width="300" height="127"/>
+    <img src="imgs/res1.png" width="300" height="110"/>
+    <img src="imgs/res2.png" width="300" height="111"/>
 </p>
 
 #### References
