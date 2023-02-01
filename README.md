@@ -1,5 +1,7 @@
-# TweetGage
-Official implementation of the paper "TweetGage: A Graph Neural Network Based Method For Tweets Engagement Prediction" [![Paper](https://img.shields.io/badge/arXiv-brightgreen)]()
+# TweetGage: A Graph Neural Network Based Method For Tweets Engagement Prediction
+
+
+Official implementation of the paper: "TweetGage: A Graph Neural Network Based Method For Tweets Engagement Prediction" [![Paper](https://img.shields.io/badge/arXiv-brightgreen)]()
 
 
 [Marco Arazzi](https://scholar.google.com/citations?user=8dD5SUkAAAAJ&hl=it&oi=ao),
