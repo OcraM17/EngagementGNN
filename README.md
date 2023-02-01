@@ -37,7 +37,7 @@ To replicate the results of our code, execute the following command in your term
 ```
 python3 main.py --LOAD_CSV --EXTRACT_BERT --USE_PCA --USER_FEAT --BERT_FEAT --Model_Type 'GCN'
 ```
-###Arguments Explanation
+### Arguments Explanation
 
 The following arguments can be passed to the main.py script:
 
