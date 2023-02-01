@@ -31,11 +31,25 @@ For our experiments, we considered one week of data from twitter, from [November
 </p>
 
 
-## Experiments
-To execute our code and replicate our results run the command:
+## Running the Code
+
+To replicate the results of our code, execute the following command in your terminal:
 ```
-python3 main.py 
+python3 main.py --LOAD_CSV --EXTRACT_BERT --USE_PCA --USER_FEAT --BERT_FEAT --Model_Type 'GCN'
 ```
+###Arguments Explanation
+
+The following arguments can be passed to the main.py script:
+
+- LOAD_CSV: Loads the file "first_week_posts_bert.csv", which contains post features and BERT-extracted text embeddings.
+- EXTRACT_BERT: Computes the text embedding of the posts using BERT (valid only if LOAD_CSV is not provided).
+- USE_PCA: If True, computes the Principal Component Analysis with 48 projected features that cover more than 80% of the variance of the text features.
+- USER_FEAT: If True, includes Post Features in the final feature set.
+- BERT_FEAT: If True, includes Text Features in the final feature set.
+- Model_Type: Can be one of the following: 'GCN', 'MLP', 'Conv1D', 'GAT', 'XGBOOST'. Default value is 'GCN'.
+- MULTI_LABEL: If True, converts the binary classification problem into a multi-label one.
+
+Note: If any argument is omitted, its default value is False.
 
 ## Results
 

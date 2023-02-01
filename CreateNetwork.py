@@ -8,7 +8,7 @@ import numpy as np
 
 # settings (define the path to the tweets dataset)
 delta = 15
-path_to_tweets = "C:\\Users\\Luca_\\Downloads\\first_week.csv"
+path_to_tweets = "./first_week.csv"
 n_jobs = 8
 
 '''
@@ -61,4 +61,4 @@ else:
 
 
 # protocol=4 ensures compatibility with older Python versions
-nx.write_gpickle(graph, filename + "_graph.pickle", protocol=4)
+nx.write_gpickle(graph, "network_tweets.pickle", protocol=4)

@@ -11,17 +11,33 @@ import networkx as nx
 from tensorflow import keras
 from keras.utils import to_categorical
 import random
-from Xgboost import create_XGB
-from Conv1D import create_Conv1D
-from GAT import create_GAT
-from GCN import create_GCN
-from MLP import create_MLP
+from models.Xgboost import create_XGB
+from models.Conv1D import create_Conv1D
+from models.GAT import create_GAT
+from models.GCN import create_GCN
+from models.MLP import create_MLP
+import argparse
+
+
+def parse_args():
+    parser = argparse.ArgumentParser("TweetGage Params")
+    a = parser.add_argument
+    a('--LOAD_CSV', action='store_true')
+    a('--EXTRACT_BERT', action='store_true')
+    a('--USE_PCA', action='store_true')
+    a('--USER_FEAT', action='store_true')
+    a('--BERT_FEAT', action='store_true')
+    a('--Model_Type', default='GCN', type=str)
+    a('--MULTI_LABEL', action='store_true')
+    return parser.parse_args()
+
 
 def reset_random_seeds():
-    os.environ['PYTHONHASHSEED']=str(2)
+    os.environ['PYTHONHASHSEED'] = str(2)
     tf.random.set_seed(2)
     np.random.seed(2)
     random.seed(2)
+
 
 def select_params(Model_type, X_train, y_train, X_test, y_test, df, g, num_classes=2, num_epochs=300):
     num_classes = num_classes
@@ -56,7 +72,7 @@ def select_params(Model_type, X_train, y_train, X_test, y_test, df, g, num_class
         model = create_MLP(X_train.shape[1], hidden_units, num_classes, dropout_rate)
     if Model_type == 'Conv1D':
         hidden_units = 64
-        learning_rate = 0.1  # Original 0.1
+        learning_rate = 0.1
         batch_size = 256
         model = create_Conv1D(num_classes, hidden_units, X_train.shape[1])
         input = X_train.values.reshape(-1, X_train.shape[1], 1)
@@ -91,22 +107,25 @@ def select_params(Model_type, X_train, y_train, X_test, y_test, df, g, num_class
         model = create_XGB(max_depth, learning_rate, subsample,
                            colsample_bytree, eval_metric, objective,
                            tree_method, seed)
-        return None, None, None, None, None, None, None, None, None, None, None, None, None, None, model
+        return model
     return hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, num_heads, input, target, loss, optimizer, input_test, target_test, model
 
 
 def main(LOAD_CSV=False, EXTRACT_BERT=True, USE_PCA=False, USER_FEAT=True, BERT_FEAT=True, Model_Type='GCN', MULTI_LABEL=True):
     reset_random_seeds()
-    g = nx.read_gpickle('./fist_week.pickle')
+    g = nx.read_gpickle('./network_tweets.pickle')
     print("POST:", len(g.nodes))
     print("ARCS:", len(g.edges))
     print("COMPONENTS:", nx.number_connected_components(g))
     if not LOAD_CSV:
         df = pd.read_csv("./first_week.csv", lineterminator="\n")
         if MULTI_LABEL:
-            df["class"] = df["engagement"].apply(lambda x: eng_mult_class(x))
+            ths = [(0, 1), (1, 5), (5, 1e6)]
+            df["class"] = df["engagement"].apply(lambda x: eng_mult_class(x, ths))
+            num_classes = len(ths)
         else:
             df["class"] = df["engagement"].apply(lambda x: eng_class(x))
+            num_classes = 2
         df = df.groupby('class').apply(sampling_k_elements).reset_index(drop=True)
         if EXTRACT_BERT:
             model = SentenceTransformer('efederici/sentence-bert-base')
@@ -132,24 +151,27 @@ def main(LOAD_CSV=False, EXTRACT_BERT=True, USE_PCA=False, USER_FEAT=True, BERT_
             emb = pca.transform(df.drop(["class"], axis=1))
             df = pd.concat([pd.DataFrame(emb), df[["class"]]], axis=1)
 
-
-
-
-
     X_train, X_test, y_train, y_test = train_test_split(df.drop(["class"], axis=1), df["class"], test_size=0.2,
                                                         random_state=42, stratify=df["class"])
-    hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, \
-    num_heads, input, target, loss, optimizer, input_test, target_test, model = select_params(Model_Type, X_train,
-                                                                                              y_train, X_test, y_test,
-                                                                                              df,
-                                                                                              g, num_classes=2,
-                                                                                              num_epochs=300)
+
     if not Model_Type == 'XGBOOST':
+        hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, \
+        num_heads, input, target, loss, optimizer, input_test, target_test, model = select_params(Model_Type, X_train,
+                                                                                                  y_train, X_test,
+                                                                                                  y_test,
+                                                                                                  df,
+                                                                                                  g,
+                                                                                                  num_classes=num_classes,
+                                                                                                  num_epochs=300)
         run_experiment(model, input, target, learning_rate, loss, num_epochs, batch_size, optimizer)
         evaluate(model, input_test, target_test)
     else:
+        model = select_params(Model_Type, X_train, y_train, X_test, y_test, df, g, num_classes=num_classes,
+                              num_epochs=300)
         obj = run_experiment_XGB(model, X_train, y_train)
         evaluate_XGB(obj, X_test, y_test)
 
+
 if __name__ == '__main__':
-    main()
+    args = vars(parse_args())
+    main(*list(args.values))
