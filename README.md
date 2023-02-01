@@ -18,12 +18,6 @@ In this paper we present **TweetGage**, a Graph Neural Network solution to predi
 <p align="center">
 <img src="imgs/teaser.png"/>
 
-### Dataset links
-
-Here you can find the datasets we used for TweetGage:
-- [Network of posts](https://drive.google.com/file/d/1JPKHXMzO6K-ZKKJq_5l4U_irlVCxuyEf/view): pickle file that can be loaded with networkx using the read_gpickle function
-- [Tweets](https://drive.google.com/file/d/1jcMsKzeaHRVEMryt-agqyBrpN6ABvg4I/view): tweets dataset including BERT embedding and the features used by TweetGage
-
 ### Requirements 
 In order to replicate our results you can create an environment via Anaconda and install the required packages using pip
 ```
@@ -32,7 +26,7 @@ conda activate TweetGage
 pip install -r req.txt
 ```
 ### Dataset
-For our experiments, we considered one week of data from twitter, from [November 1st 2021 to November 7th.](https://archive.org/details/archiveteam-twitter-stream-2021-11)
+For our experiments, we considered one week of data from twitter, from November 1st 2021 to November 7th obtained through the Twitter API.
 <p float="center">
     <img src="imgs/gr2.png" width="300" height="120" />
     <img src="imgs/gr1.png" width="300" height="122"/>
