@@ -1,7 +1,13 @@
-# TweetGage: A Graph Neural Network Based Method For Tweets Engagement Prediction
+# A Graph Neural Network Framework For Post Engagement Prediction in Online social Media
+Welcome to the "A Graph Neural Network Framework For Post Engagement Prediction in Online Social Media" repository!
 
+This repository contains two works focused on predicting post engagement in online social media using graph neural networks.
+The goal of this framework is to provide an effective solution for understanding and predicting the engagement of posts in online social media platforms, using the relationships between posts, users, and other network structures. The works presented here showcase the potential of graph neural networks in this field and provide a solid foundation for future research. We hope this repository serves as a valuable resource for the machine learning community.
 
-Official implementation of the paper: "TweetGage: A Graph Neural Network Based Method For Tweets Engagement Prediction" [![Paper](https://img.shields.io/badge/arXiv-brightgreen)]()
+## Predicting Tweet Engagement with Graph Neural Networks  [![Paper](https://img.shields.io/badge/arXiv-brightgreen)]()
+Official implementation of the paper: "Predicting Tweet Engagement with Graph Neural Networks"
+
+In this paper we present **TweetGage**, a Graph Neural Network solution to predict the user engagement based on a novel graph-based model that represents the relationships among posts. 
 
 
 [Marco Arazzi](https://scholar.google.com/citations?user=8dD5SUkAAAAJ&hl=it&oi=ao),
@@ -49,7 +55,6 @@ The following arguments can be passed to the main.py script:
 - USER_FEAT: If True, includes Post Features in the final feature set.
 - BERT_FEAT: If True, includes Text Features in the final feature set.
 - Model_Type: Can be one of the following: 'GCN', 'MLP', 'Conv1D', 'GAT', 'XGBOOST'. Default value is 'GCN'.
-- MULTI_LABEL: If True, converts the binary classification problem into a multi-label one.
 
 Note: If any argument is omitted, its default value is False.
 
@@ -65,8 +70,10 @@ If this repo is useful to your research or you want to cite our paper please use
 ```
 @article{2023Tweetgage,
     author={Marco, Arazzi and Marco, Cotogni and Antonino, Nocera and Luca, Virgili},
-    title={TweetGage: A Graph Neural Network Based Method For Tweets Engagement Prediction},
+    title={Predicting Tweet Engagement with Graph Neural Networks},
     journal={arXiv preprint},
     year={2023}
 }
 ```
+
+## Available Soon...

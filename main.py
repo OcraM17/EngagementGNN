@@ -5,7 +5,7 @@ from sklearn.decomposition import PCA
 from sklearn.model_selection import train_test_split
 from Training import run_experiment, run_experiment_XGB
 from Evaluation import evaluate, evaluate_XGB
-from utils import normalize, eng_class, sampling_k_elements, extract_graph, eng_mult_class
+from utils import normalize, eng_class, sampling_k_elements, extract_graph
 import numpy as np
 import networkx as nx
 from tensorflow import keras
@@ -28,7 +28,6 @@ def parse_args():
     a('--USER_FEAT', action='store_true')
     a('--BERT_FEAT', action='store_true')
     a('--Model_Type', default='GCN', type=str)
-    a('--MULTI_LABEL', action='store_true')
     return parser.parse_args()
 
 
@@ -111,7 +110,7 @@ def select_params(Model_type, X_train, y_train, X_test, y_test, df, g, num_class
     return hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, num_heads, input, target, loss, optimizer, input_test, target_test, model
 
 
-def main(LOAD_CSV=False, EXTRACT_BERT=True, USE_PCA=False, USER_FEAT=True, BERT_FEAT=True, Model_Type='GCN', MULTI_LABEL=True):
+def main(LOAD_CSV=False, EXTRACT_BERT=True, USE_PCA=False, USER_FEAT=True, BERT_FEAT=True, Model_Type='GCN'):
     reset_random_seeds()
     g = nx.read_gpickle('./network_tweets.pickle')
     print("POST:", len(g.nodes))
@@ -119,13 +118,7 @@ def main(LOAD_CSV=False, EXTRACT_BERT=True, USE_PCA=False, USER_FEAT=True, BERT_
     print("COMPONENTS:", nx.number_connected_components(g))
     if not LOAD_CSV:
         df = pd.read_csv("./first_week.csv", lineterminator="\n")
-        if MULTI_LABEL:
-            ths = [(0, 1), (1, 5), (5, 1e6)]
-            df["class"] = df["engagement"].apply(lambda x: eng_mult_class(x, ths))
-            num_classes = len(ths)
-        else:
-            df["class"] = df["engagement"].apply(lambda x: eng_class(x))
-            num_classes = 2
+        df["class"] = df["engagement"].apply(lambda x: eng_class(x))
         df = df.groupby('class').apply(sampling_k_elements).reset_index(drop=True)
         if EXTRACT_BERT:
             model = SentenceTransformer('efederici/sentence-bert-base')
@@ -153,7 +146,6 @@ def main(LOAD_CSV=False, EXTRACT_BERT=True, USE_PCA=False, USER_FEAT=True, BERT_
 
     X_train, X_test, y_train, y_test = train_test_split(df.drop(["class"], axis=1), df["class"], test_size=0.2,
                                                         random_state=42, stratify=df["class"])
-
     if not Model_Type == 'XGBOOST':
         hidden_units, num_classes, learning_rate, num_epochs, dropout_rate, batch_size, num_layers, \
         num_heads, input, target, loss, optimizer, input_test, target_test, model = select_params(Model_Type, X_train,
@@ -161,12 +153,11 @@ def main(LOAD_CSV=False, EXTRACT_BERT=True, USE_PCA=False, USER_FEAT=True, BERT_
                                                                                                   y_test,
                                                                                                   df,
                                                                                                   g,
-                                                                                                  num_classes=num_classes,
                                                                                                   num_epochs=300)
         run_experiment(model, input, target, learning_rate, loss, num_epochs, batch_size, optimizer)
         evaluate(model, input_test, target_test)
     else:
-        model = select_params(Model_Type, X_train, y_train, X_test, y_test, df, g, num_classes=num_classes,
+        model = select_params(Model_Type, X_train, y_train, X_test, y_test, df, g,
                               num_epochs=300)
         obj = run_experiment_XGB(model, X_train, y_train)
         evaluate_XGB(obj, X_test, y_test)

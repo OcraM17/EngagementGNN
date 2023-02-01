@@ -5,11 +5,6 @@ import numpy as np
 import networkx as nx
 
 
-def eng_mult_class(x, ths):
-    for i, (low, up) in enumerate(ths):
-        if x >= low and x < up:
-            return i
-
 def eng_class(x):
     if x <= 0:
         return 0
