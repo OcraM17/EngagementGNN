@@ -26,16 +26,24 @@ conda activate TweetGage
 pip install -r req.txt
 ```
 ### Dataset
-For our experiments, we considered one week of data from twitter, from November 1st 2021 to November 7th obtained through the Twitter API.
+For our experiments, we considered one week of data from twitter, from [November 1st to November 7th 2021]((https://archive.org/details/archiveteam-twitter-stream-2021-11)),  obtained through the Twitter API.
 <p float="center">
     <img src="imgs/gr2.png" width="300" height="120" />
     <img src="imgs/gr1.png" width="300" height="122"/>
 </p>
 
+### Graph Creation
+
+Once the tweets have been downloaded, the graph network can be build and saved as a .pickle file with:
+```
+python3 CreateNetwork.py
+```
+
+The script will create the graph network as 'network_tweets.pickle'.
 
 ### Running the Code
 
-To replicate the results of our code, execute the following command in your terminal:
+Once the graph network has been createdm, it is possible to replicate the results of our paper, executing the following command in your terminal:
 ```
 python3 main.py --LOAD_CSV --EXTRACT_BERT --USE_PCA --USER_FEAT --BERT_FEAT --Model_Type 'GCN'
 ```
@@ -43,7 +51,7 @@ python3 main.py --LOAD_CSV --EXTRACT_BERT --USE_PCA --USER_FEAT --BERT_FEAT --Mo
 
 The following arguments can be passed to the main.py script:
 
-- LOAD_CSV: Loads the file "first_week_posts_bert.csv", which contains post features and BERT-extracted text embeddings.
+- LOAD_CSV: If you have already computed the features in a csv file, you can load it with this argument. In our code, we load the file "first_week_posts_bert.csv", which contains post features and BERT-extracted text embeddings.
 - EXTRACT_BERT: Computes the text embedding of the posts using BERT (valid only if LOAD_CSV is not provided).
 - USE_PCA: If True, computes the Principal Component Analysis with 48 projected features that cover more than 80% of the variance of the text features.
 - USER_FEAT: If True, includes Post Features in the final feature set.
