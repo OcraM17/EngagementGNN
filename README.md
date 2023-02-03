@@ -26,7 +26,7 @@ conda activate TweetGage
 pip install -r req.txt
 ```
 ### Dataset
-For our experiments, we considered one week of data from twitter, from [November 1st to November 7th 2021]((https://archive.org/details/archiveteam-twitter-stream-2021-11)),  obtained through the Twitter API.
+For our experiments, we considered one week of data from twitter, from [November 1st to November 7th 2021](https://archive.org/details/archiveteam-twitter-stream-2021-11),  obtained through the Twitter API.
 <p float="center">
     <img src="imgs/gr2.png" width="300" height="120" />
     <img src="imgs/gr1.png" width="300" height="122"/>
