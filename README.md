@@ -4,7 +4,7 @@ Welcome to the "A Graph Neural Network Framework For Post Engagement Prediction 
 This repository contains two works focused on predicting post engagement in online social media using graph neural networks.
 The goal of this framework is to provide an effective solution for understanding and predicting the engagement of posts in online social media platforms, using the relationships between posts, users, and other network structures. The works presented here showcase the potential of graph neural networks in this field and provide a solid foundation for future research. We hope this repository serves as a valuable resource for the machine learning community.
 
-## Predicting Tweet Engagement with Graph Neural Networks  [![Paper](https://img.shields.io/badge/arXiv-brightgreen)]()
+## Predicting Tweet Engagement with Graph Neural Networks  [![Paper](https://img.shields.io/badge/PrePrint-brightgreen)](https://github.com/OcraM17/EngagementGNN/blob/master/files/tweetgage.zip)
 Official implementation of the paper: "Predicting Tweet Engagement with Graph Neural Networks"
 
 In this paper we present **TweetGage**, a Graph Neural Network solution to predict the user engagement based on a novel graph-based model that represents the relationships among posts. 
@@ -43,7 +43,7 @@ The script will create the graph network as 'network_tweets.pickle'.
 
 ### Running the Code
 
-Once the graph network has been createdm, it is possible to replicate the results of our paper, executing the following command in your terminal:
+Once the graph network has been created, it is possible to replicate the results of our paper, executing the following command in your terminal:
 ```
 python3 main.py --LOAD_CSV --EXTRACT_BERT --USE_PCA --USER_FEAT --BERT_FEAT --Model_Type 'GCN'
 ```
@@ -70,10 +70,10 @@ Note: If any argument is omitted, its default value is False.
 #### References
 If this repo is useful to your research or you want to cite our paper please use:
 ```
-@article{2023Tweetgage,
-    author={Marco, Arazzi and Marco, Cotogni and Antonino, Nocera and Luca, Virgili},
-    title={Predicting Tweet Engagement with Graph Neural Networks},
-    journal={arXiv preprint},
+@article{TechReport,
+    author={M. Arazzi and M. Cotogni and A. Nocera and L. Virgili},
+    title={{Predicting Tweet Engagement with Graph Neural Networks}},
+    journal={Technical Report Available from the Authors},
     year={2023}
 }
 ```
