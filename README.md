@@ -72,7 +72,7 @@ If this repo is useful to your research or you want to cite our paper please use
 ```
 @article{TechReport,
     author={M. Arazzi and M. Cotogni and A. Nocera and L. Virgili},
-    title={{Predicting Tweet Engagement with Graph Neural Networks}},
+    title={Predicting Tweet Engagement with Graph Neural Networks},
     journal={Technical Report Available from the Authors},
     year={2023}
 }
