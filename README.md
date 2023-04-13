@@ -7,6 +7,8 @@ The goal of this framework is to provide an effective solution for understanding
 ## Predicting Tweet Engagement with Graph Neural Networks  [![Paper](https://img.shields.io/badge/PrePrint-brightgreen)](https://github.com/OcraM17/EngagementGNN/blob/master/files/tweetgage.zip)
 Official implementation of the paper: "Predicting Tweet Engagement with Graph Neural Networks"
 
+Accepted in the **ACM International Conference on Multimedia Retrieval 2023 (ICMR2023)**
+
 In this paper we present **TweetGage**, a Graph Neural Network solution to predict the user engagement based on a novel graph-based model that represents the relationships among posts. 
 
 
