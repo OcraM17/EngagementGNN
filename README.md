@@ -4,7 +4,7 @@ Welcome to the "A Graph Neural Network Framework For Post Engagement Prediction 
 This repository contains two works focused on predicting post engagement in online social media using graph neural networks.
 The goal of this framework is to provide an effective solution for understanding and predicting the engagement of posts in online social media platforms, using the relationships between posts, users, and other network structures. The works presented here showcase the potential of graph neural networks in this field and provide a solid foundation for future research. We hope this repository serves as a valuable resource for the machine learning community.
 
-## Predicting Tweet Engagement with Graph Neural Networks  [![Paper](https://img.shields.io/badge/PrePrint-brightgreen)](https://github.com/OcraM17/EngagementGNN/blob/master/files/tweetgage.zip)
+## Predicting Tweet Engagement with Graph Neural Networks  [![Paper](https://img.shields.io/badge/PrePrint-brightgreen)](http://arxiv.org/abs/2305.10103)
 Official implementation of the paper: "Predicting Tweet Engagement with Graph Neural Networks"
 
 Accepted in the **ACM International Conference on Multimedia Retrieval 2023 (ICMR2023)**
