@@ -4,10 +4,10 @@ Welcome to the "A Graph Neural Network Framework For Post Engagement Prediction 
 This repository contains two works focused on predicting post engagement in online social media using graph neural networks.
 The goal of this framework is to provide an effective solution for understanding and predicting the engagement of posts in online social media platforms, using the relationships between posts, users, and other network structures. The works presented here showcase the potential of graph neural networks in this field and provide a solid foundation for future research. We hope this repository serves as a valuable resource for the machine learning community.
 
-## Predicting Tweet Engagement with Graph Neural Networks  [![Paper](https://img.shields.io/badge/PrePrint-brightgreen)](http://arxiv.org/abs/2305.10103)
+## Predicting Tweet Engagement with Graph Neural Networks  [![Paper](https://img.shields.io/badge/PrePrint-brightgreen)](http://arxiv.org/abs/2305.10103) [![Paper](https://img.shields.io/badge/Paper-red)](https://dl.acm.org/doi/10.1145/3591106.3592294)
 Official implementation of the paper: "Predicting Tweet Engagement with Graph Neural Networks"
 
-Accepted in the **ACM International Conference on Multimedia Retrieval 2023 (ICMR2023)**
+Published in the **ACM International Conference on Multimedia Retrieval 2023 (ICMR2023)**
 
 In this paper we present **TweetGage**, a Graph Neural Network solution to predict the user engagement based on a novel graph-based model that represents the relationships among posts. 
 
@@ -72,11 +72,16 @@ Note: If any argument is omitted, its default value is False.
 #### References
 If this repo is useful to your research or you want to cite our paper please use:
 ```
-@article{TechReport,
-    author={M. Arazzi and M. Cotogni and A. Nocera and L. Virgili},
-    title={Predicting Tweet Engagement with Graph Neural Networks},
-    journal={Technical Report Available from the Authors},
-    year={2023}
+@inproceedings{
+10.1145/3591106.3592294, 
+author = {Arazzi, Marco and Cotogni, Marco and Nocera, Antonino and Virgili, Luca}, 
+title = {Predicting Tweet Engagement with Graph Neural Networks}, 
+year = {2023}, 
+booktitle = {Proceedings of the 2023 ACM International Conference on Multimedia Retrieval}, 
+pages = {172–180}, 
+numpages = {9}, 
+location = {Thessaloniki, Greece}, 
+series = {ICMR '23} 
 }
 ```
 
